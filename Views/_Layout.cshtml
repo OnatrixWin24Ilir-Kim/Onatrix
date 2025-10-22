@@ -1,0 +1,90 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@{
+    var siteSettings = Umbraco.ContentAtRoot().FirstOrDefault(x => x.ContentType.Alias == "siteSettings");
+    var siteName = siteSettings?.Value<string>("siteName") ?? "Onatrix";
+    var siteLogotype = siteSettings?.Value<IPublishedContent>("siteLogotype");
+    var officeLocation = siteSettings?.Value<string>("officeLocation") ?? "Klarabergsviadukten 90, 111 64 Stockholm";
+    var facebookUrl = siteSettings?.Value<string>("facebookUrl");
+    var twitterUrl = siteSettings?.Value<string>("twitterUrl");
+    var linkedInUrl = siteSettings?.Value<string>("linkedInUrl");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - @siteName</title>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="top-bar-left">
+                    <span>@officeLocation</span>
+                </div>
+                <div class="top-bar-right">
+                    @if (!string.IsNullOrEmpty(facebookUrl))
+                    {
+                        <a href="@facebookUrl" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    }
+                    @if (!string.IsNullOrEmpty(twitterUrl))
+                    {
+                        <a href="@twitterUrl" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    }
+                    @if (!string.IsNullOrEmpty(linkedInUrl))
+                    {
+                        <a href="@linkedInUrl" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="/">
+                        @if (siteLogotype != null)
+                        {
+                            <img src="@siteLogotype.Url()" alt="@siteName">
+                        }
+                        else
+                        {
+                            <span>@siteName</span>
+                        }
+                    </a>
+                </div>
+                <nav class="nav">
+                    @await Html.PartialAsync("~/Views/Partials/_Navigation.cshtml")
+                </nav>
+                <div class="search">
+                    <button class="search-btn" aria-label="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year @siteName. All Rights Reserved. Credits to ThemeWrist</p>
+        </div>
+    </footer>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</body>
+</html>

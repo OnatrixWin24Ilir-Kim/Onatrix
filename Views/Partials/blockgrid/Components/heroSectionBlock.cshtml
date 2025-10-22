@@ -1,0 +1,27 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var headline = Model.Content.Value<string>("headline");
+    var preamble = Model.Content.Value<string>("preamble");
+    var buttonText = Model.Content.Value<string>("buttonText");
+    var buttonUrl = Model.Content.Value<IPublishedContent>("buttonUrl");
+    
+    // Fix: Media Picker returns a LIST, get first item
+    var backgroundImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("backgroundImage");
+    var imageUrl = backgroundImages?.FirstOrDefault()?.Url() ?? "";
+}
+
+<section class="hero-section" style="background-image: url('@imageUrl');">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>@headline</h1>
+                <p>@preamble</p>
+                @if (buttonUrl != null && !string.IsNullOrEmpty(buttonText))
+                {
+                    <a href="@buttonUrl.Url()" class="btn btn-primary">@buttonText</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

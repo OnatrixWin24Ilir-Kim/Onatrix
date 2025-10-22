@@ -1,0 +1,23 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    var homePage = Umbraco.ContentAtRoot().FirstOrDefault();
+    var currentPage = Model;
+}
+
+@if (homePage != null)
+{
+    <ul class="nav-list">
+        @* Home link *@
+        <li class="nav-item @(currentPage.Id == homePage.Id ? "active" : "")">
+            <a href="@homePage.Url()">Home</a>
+        </li>
+
+        @* Child pages *@
+        @foreach (var item in homePage.Children().Where(x => x.IsVisible()))
+        {
+            <li class="nav-item @(currentPage.Id == item.Id || currentPage.AncestorOrSelf(item.Level)?.Id == item.Id ? "active" : "")">
+                <a href="@item.Url()">@item.Name</a>
+            </li>
+        }
+    </ul>
+}

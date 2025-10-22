@@ -1,0 +1,51 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Strings
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var sectionLabel = Model.Content.Value<string>("sectionLabel");
+    var headline = Model.Content.Value<string>("headline");
+    var quote = Model.Content.Value<string>("quote");
+    var text = Model.Content.Value<IHtmlEncodedString>("text");
+    
+    // Fix: Media Picker returns a LIST
+    var signatureImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("signatureImage");
+    var signatureImage = signatureImages?.FirstOrDefault();
+    
+    var signatureName = Model.Content.Value<string>("signatureName");
+}
+
+<section class="about-section">
+    <div class="container">
+        <div class="about-content">
+            @if (!string.IsNullOrEmpty(sectionLabel))
+            {
+                <p class="section-label">@sectionLabel</p>
+            }
+            <h2>@headline</h2>
+            
+            @if (!string.IsNullOrEmpty(quote))
+            {
+                <blockquote class="quote">@quote</blockquote>
+            }
+            
+            @if (text != null)
+            {
+                <div class="text">
+                    @Html.Raw(text)
+                </div>
+            }
+            
+            @if (signatureImage != null)
+            {
+                <div class="signature">
+                    <img src="@signatureImage.Url()" alt="Signature">
+                </div>
+            }
+            
+            @if (!string.IsNullOrEmpty(signatureName))
+            {
+                <p class="signature-name">@signatureName</p>
+            }
+        </div>
+    </div>
+</section>

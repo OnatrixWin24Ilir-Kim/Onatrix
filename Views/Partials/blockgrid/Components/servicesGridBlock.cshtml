@@ -1,0 +1,42 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var sectionTitle = Model.Content.Value<string>("sectionTitle");
+    var services = Model.Content.Value<BlockListModel>("services");
+}
+
+<section class="services-section">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(sectionTitle))
+        {
+            <h2 class="section-title">@sectionTitle</h2>
+        }
+        
+        @if (services != null && services.Any())
+        {
+            <div class="services-grid">
+                @foreach (var serviceBlock in services)
+                {
+                    var serviceTitle = serviceBlock.Content.Value<string>("serviceTitle");
+                    var serviceDescription = serviceBlock.Content.Value<string>("serviceDescription");
+                    
+                    // Fix: Media Picker returns a LIST
+                    var serviceImages = serviceBlock.Content.Value<IEnumerable<MediaWithCrops>>("serviceImage");
+                    var serviceImage = serviceImages?.FirstOrDefault();
+                    
+                    <div class="service-card">
+                        @if (serviceImage != null)
+                        {
+                            <div class="service-image">
+                                <img src="@serviceImage.Url()" alt="@serviceTitle">
+                            </div>
+                        }
+                        <h3>@serviceTitle</h3>
+                        <p>@serviceDescription</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

@@ -1,5 +1,23 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using Umbraco.Cms.Core.Models.Blocks
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @{
-	Layout = null;
+    Layout = "layout.cshtml";
+    
+    var metaTitle = Model.Value<string>("metaTitle");
+    var metaDescription = Model.Value<string>("metaDescription");
+    
+    ViewData["Title"] = !string.IsNullOrEmpty(metaTitle) ? metaTitle : Model.Name;
+    
+    var pageLayout = Model.Value<BlockListModel>("pageLayout");
+}
+
+@if (pageLayout != null && pageLayout.Any())
+{
+    foreach (var block in pageLayout)
+    {
+        var contentAlias = block.Content.ContentType.Alias;
+        var partialPath = $"~/Views/Partials/blockgrid/Components/{contentAlias}.cshtml";
+        
+        @await Html.PartialAsync(partialPath, block)
+    }
 }
