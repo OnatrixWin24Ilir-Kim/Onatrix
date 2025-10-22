@@ -248,6 +248,70 @@ body {
     margin-top: 80px;
 }
 
+
+/* Success Story Section */
+.success-story-section {
+    background-color: #4F5955;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    padding: 80px 0;
+    color: #fff;
+    text-align: center;
+    position: relative;
+}
+
+.success-story-section .section-label {
+    color: #D9C3A9;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.success-story-section h2 {
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 50px;
+}
+
+.statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin-bottom: 50px;
+}
+
+.statistic-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 72px;
+    font-weight: bold;
+    color: #D9C3A9;
+    margin-bottom: 15px;
+}
+
+.stat-description {
+    font-size: 16px;
+    color: #fff;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.success-image {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.success-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+
 .footer p {
     font-size: 14px;
 }

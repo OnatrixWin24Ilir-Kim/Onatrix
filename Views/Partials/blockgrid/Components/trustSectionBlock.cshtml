@@ -1,0 +1,48 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var headline = Model.Content.Value<string>("headline");
+    var highlightedText = Model.Content.Value<string>("highlightedText");
+    var description = Model.Content.Value<string>("description");
+    var buttonText = Model.Content.Value<string>("buttonText");
+    var buttonUrl = Model.Content.Value<IPublishedContent>("buttonUrl");
+    
+    // Fix: Media Picker returns a LIST
+    var sectionImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("sectionImage");
+    var sectionImage = sectionImages?.FirstOrDefault();
+    
+    var backgroundImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("backgroundImage");
+    var backgroundImage = backgroundImages?.FirstOrDefault();
+    var backgroundUrl = backgroundImage?.Url() ?? "";
+}
+
+<section class="trust-section" style="background-image: url('@backgroundUrl');">
+    <div class="container">
+        <div class="trust-content">
+            <div class="trust-text">
+                @if (!string.IsNullOrEmpty(headline))
+                {
+                    <h2>@headline</h2>
+                }
+                @if (!string.IsNullOrEmpty(highlightedText))
+                {
+                    <p class="highlighted">@highlightedText</p>
+                }
+                @if (!string.IsNullOrEmpty(description))
+                {
+                    <p>@description</p>
+                }
+                @if (buttonUrl != null && !string.IsNullOrEmpty(buttonText))
+                {
+                    <a href="@buttonUrl.Url()" class="btn btn-primary">@buttonText</a>
+                }
+            </div>
+            @if (sectionImage != null)
+            {
+                <div class="trust-image">
+                    <img src="@sectionImage.Url()" alt="Team">
+                </div>
+            }
+        </div>
+    </div>
+</section>

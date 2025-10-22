@@ -1,0 +1,51 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var sectionLabel = Model.Content.Value<string>("sectionLabel");
+    var sectionTitle = Model.Content.Value<string>("sectionTitle");
+    var statistics = Model.Content.Value<BlockListModel>("statistics");
+    
+    var sectionImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("sectionImage");
+    var sectionImage = sectionImages?.FirstOrDefault();
+    
+    var backgroundImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("backgroundImage");
+    var backgroundImage = backgroundImages?.FirstOrDefault();
+    var backgroundUrl = backgroundImage?.Url() ?? "";
+}
+
+<section class="success-story-section" style="background-image: url('@backgroundUrl');">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(sectionLabel))
+        {
+            <p class="section-label">@sectionLabel</p>
+        }
+        @if (!string.IsNullOrEmpty(sectionTitle))
+        {
+            <h2>@sectionTitle</h2>
+        }
+        
+        @if (statistics != null && statistics.Any())
+        {
+            <div class="statistics-grid">
+                @foreach (var stat in statistics)
+                {
+                    var number = stat.Content.Value<string>("number");
+                    var description = stat.Content.Value<string>("description");
+                    
+                    <div class="statistic-item">
+                        <h3 class="stat-number">@number</h3>
+                        <p class="stat-description">@description</p>
+                    </div>
+                }
+            </div>
+        }
+        
+        @if (sectionImage != null)
+        {
+            <div class="success-image">
+                <img src="@sectionImage.Url()" alt="Success">
+            </div>
+        }
+    </div>
+</section>
