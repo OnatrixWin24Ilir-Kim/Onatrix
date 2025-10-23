@@ -47,8 +47,7 @@ bld/
 **/App_Data/*.mdf
 **/App_Data/*.ldf
 
-# Media files (optional)
-**/wwwroot/media/**
+
 
 # User settings
 appsettings.Development.json
@@ -523,6 +522,4 @@ umbraco-package-schema.json
 # Log files
 /umbraco/Logs/
 
-# Media files
-/wwwroot/media/
->>>>>>> dad19f1a9b8027da084911a287585c0a15b21468
+
