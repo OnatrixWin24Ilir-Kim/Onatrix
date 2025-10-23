@@ -1,0 +1,29 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@using Umbraco.Cms.Core.Models
+
+@{
+    var sectionTitle = Model.Content.Value<string>("sectionTitle");
+    var partnerLogos = Model.Content.Value<IEnumerable<MediaWithCrops>>("partnerLogos");
+}
+
+<section class="partner-logos-section">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(sectionTitle))
+        {
+            <h3 class="partner-title">@sectionTitle</h3>
+        }
+        
+        @if (partnerLogos != null && partnerLogos.Any())
+        {
+            <div class="partner-logos-grid">
+                @foreach (var logo in partnerLogos)
+                {
+                    <div class="partner-logo-item">
+                        <img src="@logo.MediaUrl()" alt="Partner logo" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
