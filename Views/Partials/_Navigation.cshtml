@@ -12,6 +12,19 @@
             <a href="@homePage.Url()">Home</a>
         </li>
 
+        <li class="nav-item @(currentPage.Id == homePage.Id ? "active" : "")">
+            <a href="@homePage.Url()">About</a>
+        </li>
+        <li class="nav-item @(currentPage.Id == homePage.Id ? "active" : "")">
+            <a href="@homePage.Url()">Services</a>
+        </li>
+
+        <li class="nav-item @(currentPage.Id == homePage.Id ? "active" : "")">
+            <a href="@homePage.Url()">Contact</a>
+        </li>
+
+        
+
         @* Child pages *@
         @foreach (var item in homePage.Children().Where(x => x.IsVisible()))
         {
