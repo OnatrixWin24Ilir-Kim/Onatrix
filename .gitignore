@@ -452,9 +452,5 @@ umbraco-package-schema.json
 # Log files
 /umbraco/Logs/
 
-# Generated models
-/umbraco/models/
-
-
 # Developer-specific settings
 appsettings.Development.json
