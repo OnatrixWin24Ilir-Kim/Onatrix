@@ -1,0 +1,31 @@
+﻿@using Umbraco.Cms.Core.Strings
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var sectionLabel = Model.Content.Value<string>("sectionLabel");
+    var headline = Model.Content.Value<string>("headline");
+    var subheading = Model.Content.Value<string>("subheading");
+    var textContent = Model.Content.Value<IHtmlEncodedString>("textContent");
+}
+
+<section class="text-section">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(sectionLabel))
+        {
+            <p class="section-label">@sectionLabel</p>
+        }
+        @if (!string.IsNullOrEmpty(headline))
+        {
+            <h2>@headline</h2>
+        }
+        @if (!string.IsNullOrEmpty(subheading))
+        {
+            <h3>@subheading</h3>
+        }
+        @if (textContent != null)
+        {
+            <div class="text-content">
+                @Html.Raw(textContent)
+            </div>
+        }
+    </div>
+</section>

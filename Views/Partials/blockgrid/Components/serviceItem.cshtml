@@ -1,0 +1,39 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    Layout = "_Layout.cshtml";
+    
+    var metaTitle = Model.Value<string>("metaTitle");
+    var pageTitle = Model.Value<string>("pageTitle");
+    
+    ViewData["Title"] = !string.IsNullOrEmpty(metaTitle) ? metaTitle : (!string.IsNullOrEmpty(pageTitle) ? pageTitle : Model.Name);
+    
+    var pageLayout = Model.Value<BlockListModel>("pageLayout");
+}
+
+@* Page Header *@
+@if (!string.IsNullOrEmpty(pageTitle))
+{
+    <section class="page-header">
+        <div class="container">
+            <h1>@pageTitle</h1>
+            <div class="breadcrumb">
+                <a href="/">Home</a> > 
+                <a href="/services">Services</a> > 
+                <span>@Model.Name</span>
+            </div>
+        </div>
+    </section>
+}
+
+@* Page Content *@
+@if (pageLayout != null && pageLayout.Any())
+{
+    foreach (var block in pageLayout)
+    {
+        var contentAlias = block.Content.ContentType.Alias;
+        var partialPath = $"~/Views/Partials/blockgrid/Components/{contentAlias}.cshtml";
+        
+        @await Html.PartialAsync(partialPath, block)
+    }
+}
