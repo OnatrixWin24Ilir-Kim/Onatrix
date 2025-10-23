@@ -1,0 +1,35 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@using Umbraco.Cms.Core.Models
+
+@{
+    var formTitle = Model.Content.Value<string>("formTitle") ?? "Request a call back";
+    var formDescription = Model.Content.Value<string>("formDescription") ?? "";
+    var submitButtonText = Model.Content.Value<string>("submitButtonText") ?? "Submit";
+}
+
+<div class="floating-box">
+    <div class="box-header">
+        <h3>@formTitle</h3>
+    </div>
+    <form method="post" class="callback-form">
+        @if (!string.IsNullOrEmpty(formDescription))
+        {
+            <p>@formDescription</p>
+        }
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="email" name="email" placeholder="Email address" required />
+        <input type="tel" name="phone" placeholder="Phone" required />
+        
+        <div class="select-wrapper">
+            <select name="service" required>
+                <option value="">Select a service</option>
+                <option value="Financial consulting">Financial consulting</option>
+                <option value="Business marketing">Business marketing</option>
+                <option value="Acquisition">Acquisition</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn-beige">@submitButtonText</button>
+    </form>
+</div>
+
