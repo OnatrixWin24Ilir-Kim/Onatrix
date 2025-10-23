@@ -1,0 +1,74 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var headline = Model.Content.Value<string>("headline");
+    var officeLocation = Model.Content.Value<string>("officeLocation");
+    var phoneNumber = Model.Content.Value<string>("phoneNumber");
+    var emailAddress = Model.Content.Value<string>("emailAddress");
+    
+    // Try multiple methods for image
+    string imageUrl = "";
+    var img1 = Model.Content.Value<IPublishedContent>("contactImage");
+    if (img1 != null) { imageUrl = img1.Url(); }
+    
+    if (string.IsNullOrEmpty(imageUrl))
+    {
+        var img2 = Model.Content.Value<MediaWithCrops>("contactImage");
+        if (img2 != null) { imageUrl = img2.Url(); }
+    }
+    
+    if (string.IsNullOrEmpty(imageUrl))
+    {
+        var img3 = Model.Content.Value<IEnumerable<MediaWithCrops>>("contactImage");
+        if (img3 != null && img3.Any()) { imageUrl = img3.FirstOrDefault()?.Url() ?? ""; }
+    }
+}
+
+<section class="contact-info-section">
+    <div class="container">
+        <div class="contact-content">
+            @if (!string.IsNullOrEmpty(imageUrl))
+            {
+                <div class="contact-image">
+                    <img src="@imageUrl" alt="Contact">
+                </div>
+            }
+            <div class="contact-info">
+                @if (!string.IsNullOrEmpty(headline))
+                {
+                    <h2>@headline</h2>
+                }
+                @if (!string.IsNullOrEmpty(officeLocation))
+                {
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Office location</strong>
+                            <p>@officeLocation</p>
+                        </div>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(phoneNumber))
+                {
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Phone number</strong>
+                            <p>@phoneNumber</p>
+                        </div>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(emailAddress))
+                {
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>E-mail address</strong>
+                            <p>@emailAddress</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

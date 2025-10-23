@@ -1,0 +1,53 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var sectionLabel = Model.Content.Value<string>("sectionLabel");
+    var headline = Model.Content.Value<string>("headline");
+    var reviewText = Model.Content.Value<string>("reviewText");
+    var starRating = Model.Content.Value<string>("starRating") ?? "5";
+    var reviewerName = Model.Content.Value<string>("reviewerName");
+    var reviewerCompany = Model.Content.Value<string>("reviewerCompany");
+    
+    var reviewerImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("reviewerImage");
+    var reviewerImage = reviewerImages?.FirstOrDefault();
+}
+
+<section class="review-section">
+    <div class="container">
+        <div class="review-content">
+            <div class="review-text-area">
+                @if (!string.IsNullOrEmpty(sectionLabel))
+                {
+                    <p class="section-label">@sectionLabel</p>
+                }
+                @if (!string.IsNullOrEmpty(headline))
+                {
+                    <h2>@headline</h2>
+                }
+                @if (!string.IsNullOrEmpty(reviewText))
+                {
+                    <blockquote class="review-quote">@reviewText</blockquote>
+                }
+                @if (!string.IsNullOrEmpty(starRating))
+                {
+                    <div class="star-rating">
+                        @for (int i = 0; i < int.Parse(starRating); i++)
+                        {
+                            <span class="star">★</span>
+                        }
+                    </div>
+                }
+                <div class="reviewer-info">
+                    <p class="reviewer-name">@reviewerName</p>
+                    <p class="reviewer-company">@reviewerCompany</p>
+                </div>
+            </div>
+            @if (reviewerImage != null)
+            {
+                <div class="reviewer-image">
+                    <img src="@reviewerImage.Url()" alt="@reviewerName">
+                </div>
+            }
+        </div>
+    </div>
+</section>

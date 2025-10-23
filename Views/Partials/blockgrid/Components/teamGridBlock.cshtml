@@ -1,0 +1,79 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>
+@{
+    var sectionLabel = Model.Content.Value<string>("sectionLabel");
+    var headline = Model.Content.Value<string>("headline");
+    var teamMembers = Model.Content.Value<BlockListModel>("teamMembers");
+}
+
+<section class="team-section">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(sectionLabel))
+        {
+            <p class="section-label">@sectionLabel</p>
+        }
+        @if (!string.IsNullOrEmpty(headline))
+        {
+            <h2>@headline</h2>
+        }
+        
+        @if (teamMembers != null && teamMembers.Any())
+        {
+            <div class="team-grid">
+                @foreach (var member in teamMembers)
+                {
+                    var memberName = member.Content.Value<string>("memberName");
+                    var memberTitle = member.Content.Value<string>("memberTitle");
+                    
+                    // Try different methods to get the image
+                    string imageUrl = "";
+                    
+                    // Method 1: Try as IPublishedContent first
+                    var img1 = member.Content.Value<IPublishedContent>("memberImage");
+                    if (img1 != null) 
+                    { 
+                        imageUrl = img1.Url(); 
+                    }
+                    
+                    // Method 2: Try as single MediaWithCrops
+                    if (string.IsNullOrEmpty(imageUrl))
+                    {
+                        var img2 = member.Content.Value<MediaWithCrops>("memberImage");
+                        if (img2 != null) 
+                        { 
+                            imageUrl = img2.Url(); 
+                        }
+                    }
+                    
+                    // Method 3: Try as IEnumerable
+                    if (string.IsNullOrEmpty(imageUrl))
+                    {
+                        var img3 = member.Content.Value<IEnumerable<MediaWithCrops>>("memberImage");
+                        if (img3 != null && img3.Any()) 
+                        { 
+                            imageUrl = img3.FirstOrDefault()?.Url() ?? ""; 
+                        }
+                    }
+                    
+                    <div class="team-member">
+                        
+                        
+                        @if (!string.IsNullOrEmpty(imageUrl))
+                        {
+                            <div class="member-image">
+                                <img src="@imageUrl" alt="@memberName">
+                            </div>
+                        }
+                        else
+                        {
+                            <p style="color: red;">NO IMAGE: @memberName</p>
+                        }
+                        <h3 class="member-name">@memberName</h3>
+                        <p class="member-title">@memberTitle</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
