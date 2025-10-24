@@ -20,21 +20,37 @@
                 {
                     var serviceTitle = serviceBlock.Content.Value<string>("serviceTitle");
                     var serviceDescription = serviceBlock.Content.Value<string>("serviceDescription");
+                    var serviceLink = serviceBlock.Content.Value<IPublishedContent>("serviceLink");
                     
-                    // Fix: Media Picker returns a LIST
-                    var serviceImages = serviceBlock.Content.Value<IEnumerable<MediaWithCrops>>("serviceImage");
-                    var serviceImage = serviceImages?.FirstOrDefault();
+                    // Try different methods to get the image
+                    string imageUrl = "";
+                    var img1 = serviceBlock.Content.Value<IPublishedContent>("serviceImage");
+                    if (img1 != null) { imageUrl = img1.Url(); }
                     
-                    <div class="service-card">
-                        @if (serviceImage != null)
+                    if (string.IsNullOrEmpty(imageUrl))
+                    {
+                        var img2 = serviceBlock.Content.Value<MediaWithCrops>("serviceImage");
+                        if (img2 != null) { imageUrl = img2.Url(); }
+                    }
+                    
+                    if (string.IsNullOrEmpty(imageUrl))
+                    {
+                        var img3 = serviceBlock.Content.Value<IEnumerable<MediaWithCrops>>("serviceImage");
+                        if (img3 != null && img3.Any()) { imageUrl = img3.FirstOrDefault()?.Url() ?? ""; }
+                    }
+                    
+                    var linkUrl = serviceLink?.Url() ?? "#";
+                    
+                    <a href="@linkUrl" class="service-card">
+                        @if (!string.IsNullOrEmpty(imageUrl))
                         {
                             <div class="service-image">
-                                <img src="@serviceImage.Url()" alt="@serviceTitle">
+                                <img src="@imageUrl" alt="@serviceTitle">
                             </div>
                         }
                         <h3>@serviceTitle</h3>
                         <p>@serviceDescription</p>
-                    </div>
+                    </a>
                 }
             </div>
         }
