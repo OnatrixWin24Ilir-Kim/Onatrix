@@ -11,6 +11,9 @@
 *.sln.docstates
 *.env
 
+# JetBrains Rider
+.idea/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -454,5 +457,3 @@ umbraco-package-schema.json
 
 # Developer-specific settings
 appsettings.Development.json
-
-echo ".idea/" >> .gitignore
