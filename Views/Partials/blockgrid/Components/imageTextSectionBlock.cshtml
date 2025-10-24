@@ -5,18 +5,43 @@
     var sectionHeadline = Model.Content.Value<string>("sectionHeadline");
     var sectionText = Model.Content.Value<IHtmlEncodedString>("sectionText");
     var imagePosition = Model.Content.Value<string>("imagePosition") ?? "Right";
+    var imageCaption = Model.Content.Value<string>("imageCaption");
     
-    var sectionImages = Model.Content.Value<IEnumerable<MediaWithCrops>>("sectionImage");
-    var sectionImage = sectionImages?.FirstOrDefault();
+    // Try multiple methods to get the image URL
+    string imageUrl = "";
+    
+    // Method 1: IPublishedContent
+    var img1 = Model.Content.Value<IPublishedContent>("sectionImage");
+    if (img1 != null) { imageUrl = img1.Url(); }
+    
+    // Method 2: MediaWithCrops
+    if (string.IsNullOrEmpty(imageUrl))
+    {
+        var img2 = Model.Content.Value<MediaWithCrops>("sectionImage");
+        if (img2 != null) { imageUrl = img2.Url(); }
+    }
+    
+    // Method 3: IEnumerable
+    if (string.IsNullOrEmpty(imageUrl))
+    {
+        var img3 = Model.Content.Value<IEnumerable<MediaWithCrops>>("sectionImage");
+        if (img3 != null && img3.Any()) { imageUrl = img3.FirstOrDefault()?.Url() ?? ""; }
+    }
 }
 
 <section class="image-text-section">
     <div class="container">
         <div class="image-text-content @(imagePosition.ToLower() == "left" ? "image-left" : "image-right")">
-            @if (sectionImage != null)
+            @if (!string.IsNullOrEmpty(imageUrl))
             {
-                <div class="section-image">
-                    <img src="@sectionImage.Url()" alt="@sectionHeadline">
+                <div class="section-image-wrapper">
+                    <div class="section-image">
+                        <img src="@imageUrl" alt="@sectionHeadline">
+                    </div>
+                    @if (!string.IsNullOrEmpty(imageCaption))
+                    {
+                        <p class="image-caption">@imageCaption</p>
+                    }
                 </div>
             }
             <div class="section-text">
