@@ -270,34 +270,48 @@ body {
 }
 
 .service-card {
-  background: #fff;
-  padding: 30px;
-  border-radius: 3px;
-  text-align: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s;
 }
 
-.service-image {
-  margin-bottom: 20px;
-  height: 200px;
-  overflow: hidden;
-}
-
-.service-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .service-card h3 {
-  font-size: 20px;
-  color: #4f5955;
-  margin-bottom: 15px;
+    font-size: 20px;
+    color: #4f5955;
+    margin-bottom: 20px; /* Rubrik först, sen bild */
+    font-weight: 700;
+}
+
+.service-image {
+    margin-bottom: 20px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .service-card p {
-  color: #666;
-  font-size: 14px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
 }
+
+
+
 
 /* Partner Logos Section */
 .partner-logos-section {
@@ -929,8 +943,7 @@ section:has(.floating-box) {
 
 /* Page Header */
 .page-header {
-    background-color: #f7f7f7;
-    background-size: cover;
+    background-color: #f2eddc; 
     background-position: center;
     padding: 80px 0;
     text-align: center;
